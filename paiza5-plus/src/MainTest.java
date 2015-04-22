@@ -11,7 +11,7 @@ public class MainTest {
     public void test1() throws Exception {
         System.setIn(new FileInputStream("data/1.txt"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+//        System.setOut(new PrintStream(out));
         Main.main(null);
         String[] result = new String(out.toByteArray()).split(System
                 .getProperty("line.separator"));
@@ -22,7 +22,7 @@ public class MainTest {
     public void test2() throws Exception {
         System.setIn(new FileInputStream("data/2.txt"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+//        System.setOut(new PrintStream(out));
         Main.main(null);
         String[] result = new String(out.toByteArray()).split(System
                 .getProperty("line.separator"));
