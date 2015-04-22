@@ -29,7 +29,9 @@ public class Main {
 
             for (int index2 = 0; index2 < y; index2++) {
                 for (int index = 0; index < x - 1; index++) {
-                    System.out.print((count[index] > y - index2 - 1 ? "1" : "0") + " ");
+                    System.out
+                            .print((count[index] > y - index2 - 1 ? "1" : "0")
+                                    + " ");
                 }
                 System.out.println((count[x - 1] > y - index2 - 1 ? "1" : "0"));
             }

@@ -7,7 +7,7 @@ public class Main {
             scanner = new Scanner(System.in);
             char[] charArray = scanner.nextLine().toCharArray();
             for (int index = 0; index < charArray.length; index += 2) {
-            	System.out.print(charArray[index]);
+                System.out.print(charArray[index]);
             }
             System.out.println();
         } finally {

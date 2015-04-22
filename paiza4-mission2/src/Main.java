@@ -8,7 +8,7 @@ public class Main {
         int n = Integer.parseInt(line);
         int sum = 0;
         for (int i = 0; i < n; i++) {
-        	sum += calc(br.readLine().trim().split(" "));
+            sum += calc(br.readLine().trim().split(" "));
         }
         System.out.println(sum);
     }
