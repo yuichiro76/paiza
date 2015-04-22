@@ -21,9 +21,6 @@ public class Main {
     // 現在OKなポジション
     private int success = 0;
 
-    // OKになってから手順数
-    private int successCount = 0;
-
     // 直前の手
     private int previous = 0;
 
@@ -38,30 +35,12 @@ public class Main {
             // 「*」は0とする
             board.read(scanner);
 
-            board.print();
-
-//            int[] hand = new int[10000000];
-            for (long i = 0; i < 100000; i++) {
-//                board.print();
+            for (int i = 0; i < 100000; i++) {
                 if (board.check()) {
                     break;
                 }
-//                hand[i] = board.move();
-                board.move();
-//                board.print();
-//                System.out.println("H: " + hand[i]);
-                if (i % 1000 == 0) {
-//                    board.print();
-                }
-
-                // 同じところから30回手が進まなければ1手戻す
-                if (board.successCount++ > 30 && board.success != 0) {
-                    board.success--;
-                    board.successCount = 0;
-                }
+                System.out.println(board.move());
             }
-            board.print();
-
         } finally {
             if (scanner != null) {
                 scanner.close();
@@ -74,40 +53,32 @@ public class Main {
      * @return クリアしたかどうか
      */
     boolean check() {
-//        System.out.println("S1: " + success);
         for (int index = success; index < SIZE_X * SIZE_Y - 1; index++) {
             int x = index % SIZE_X;
             int y = index / SIZE_Y;
             if (success == table[x][y] - 1) {
+                // 3が入った時4が入ってなければダメ
+                if (table[2][0] == 3 && table[3][0] != 4) {
+                    break;
+                }
+                // 7が入った時8がはいってなければダメ
+                if (table[2][1] == 7 && table[3][1] != 8) {
+                    break;
+                }
+                // 9が入った時13がはいってなければダメ
+                if (table[0][2] == 9 && table[0][3] != 13) {
+                    break;
+                }
+                // 10が入った時14がはいってなければダメ
+                if (table[1][2] == 10 && table[1][3] != 14) {
+                    break;
+                }
                 success++;
-                successCount = 0;
                 continue;
             }
             break;
         }
-//        for (int index2 = y; index2 < SIZE_Y; index2++) {
-//            for (int index = x; index < SIZE_X; index++) {
-//                System.out.println(table[index][index2] + " " + (index + 1 + 4 * index2));
-//                if (table[index][index2] == (index + 1 + 4 * index2)) {
-//                    continue;
-//                }
-//                success = index + 1 + 4 * index2;
-//                break;
-//            }
-//        }
-//        System.out.println("S2: " + success);
         return success == SIZE_X * SIZE_Y - 1;
-//        boolean result = true;
-//        for (int y = 0; y < SIZE_Y; y++) {
-//            for (int x = 0; x < SIZE_X; x++) {
-//                if (x == SIZE_X - 1 && y == SIZE_Y - 1) {
-//                    result = result && table[x][y] == 0;
-//                    continue;
-//                }
-//                result = result && table[x][y] == x + 1 + 4 * y;
-//            }
-//        }
-//        return result;
     }
 
     /**
@@ -116,22 +87,9 @@ public class Main {
      */
     int move() {
         int y = -1;
-        // このロジックだと
-        // 1 2 3 4
-        // 5 6 7 8
-        // 9 10 15 11
-        // 0 13 14 12
-        // とか
-        // 1 2 3 11
-        // 4 10 7 14
-        // 0 13 9 6
-        // 12 8 15 5
-        // で手詰まりになる
         int count = 0;
         while (y == -1 || y == previous || y <= success) {
             count++;
-//            System.out.println(success + " " + previous + " " + y);
-//            print();
             int x = (int)(Math.random() * 10);
             switch (x) {
             case 0:
@@ -154,7 +112,6 @@ public class Main {
             }
         }
         move(y);
-//        print();
         previous = y;
         return y;
     }
@@ -239,23 +196,5 @@ public class Main {
                 }
             }
         }
-    }
-
-    /**
-     * 盤を出力する
-     * デバッグ用
-     */
-    void print() {
-        System.out.println();
-        for (int yIndex = 0; yIndex < SIZE_Y; yIndex++) {
-            for (int xIndex = 0; xIndex < SIZE_X - 1; xIndex++) {
-                System.out.printf("%2d ", table[xIndex][yIndex]);
-            }
-            System.out.printf("%2d\n", table[SIZE_X - 1][yIndex]);
-        }
-//        System.out.println(current[X] + " " + current[Y]);
-//        for (int index = 0; index < SIZE_X * SIZE_Y - 1; index++) {
-//            System.out.println(index + 1 + ": " + piece[index][X] + " " + piece[index][Y]);
-//        }
     }
 }
