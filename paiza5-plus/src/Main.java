@@ -35,12 +35,16 @@ public class Main {
             // 「*」は0とする
             board.read(scanner);
 
+//            board.print();
             for (int i = 0; i < 100000; i++) {
                 if (board.check()) {
+//                    System.out.println(i);
                     break;
                 }
                 System.out.println(board.move());
+//                board.move();
             }
+//            board.print();
         } finally {
             if (scanner != null) {
                 scanner.close();
@@ -58,19 +62,19 @@ public class Main {
             int y = index / SIZE_Y;
             if (success == table[x][y] - 1) {
                 // 3が入った時4が入ってなければダメ
-                if (table[2][0] == 3 && table[3][0] != 4) {
+                if (table[SIZE_X - 2][0] == 3 && table[SIZE_X - 1][0] != SIZE_X) {
                     break;
                 }
                 // 7が入った時8がはいってなければダメ
-                if (table[2][1] == 7 && table[3][1] != 8) {
+                if (table[SIZE_X - 2][1] == 7 && table[SIZE_X - 1][1] != SIZE_X * 2) {
                     break;
                 }
                 // 9が入った時13がはいってなければダメ
-                if (table[0][2] == 9 && table[0][3] != 13) {
+                if (table[0][SIZE_Y - 2] == 9 && table[0][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 1) {
                     break;
                 }
                 // 10が入った時14がはいってなければダメ
-                if (table[1][2] == 10 && table[1][3] != 14) {
+                if (table[1][SIZE_Y - 2] == 10 && table[1][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 2) {
                     break;
                 }
                 success++;
@@ -90,7 +94,7 @@ public class Main {
         int count = 0;
         while (y == -1 || y == previous || y <= success) {
             count++;
-            int x = (int)(Math.random() * 10);
+            int x = (int)(Math.random() * 4);
             switch (x) {
             case 0:
                 y = canMoveUp();
@@ -105,8 +109,8 @@ public class Main {
                 y = canMoveRight();
                 break;
             }
-            if (count > 30 && y != -1) {
-                // 30回やってダメだったら諦めて戻る
+            if (count > 5 && y != -1) {
+                // 5回やってダメだったら諦めて戻る
                 y = previous;
                 break;
             }
@@ -165,6 +169,9 @@ public class Main {
      * @param number 移動する駒の番号
      */
     void move(int number) {
+        if (number <= 0) {
+            return;
+        }
         int tmpX = piece[number - 1][X];
         int tmpY = piece[number - 1][Y];
         piece[number - 1][X] = current[X];
@@ -195,6 +202,20 @@ public class Main {
                     piece[table[xIndex][yIndex] - 1][Y] = yIndex;
                 }
             }
+        }
+    }
+
+    /**
+     * 盤を出力する
+     * デバッグ用
+     */
+    void print() {
+        System.out.println();
+        for (int yIndex = 0; yIndex < SIZE_Y; yIndex++) {
+            for (int xIndex = 0; xIndex < SIZE_X - 1; xIndex++) {
+                System.out.printf("%2d ", table[xIndex][yIndex]);
+            }
+            System.out.printf("%2d\n", table[SIZE_X - 1][yIndex]);
         }
     }
 }
