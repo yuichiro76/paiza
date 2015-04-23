@@ -40,15 +40,17 @@ public class Main {
                 // System.out.println(i);
                 break;
             }
-            // System.out.println(move());
-            move();
+            System.out.println(move());
+            // move();
+            // print();
         }
-        print();
-        System.out.println(i);
+        // print();
+        // System.out.println(i);
     }
 
     /**
      * クリアしたかをチェックする
+     *
      * @return クリアしたかどうか
      */
     boolean check() {
@@ -57,23 +59,34 @@ public class Main {
             int y = index / SIZE_Y;
             if (success == table[x][y] - 1) {
                 // 3が入った時4が入ってなければダメ
-                if (table[SIZE_X - 2][0] == SIZE_X - 1 && table[SIZE_X - 1][0] != SIZE_X) {
-                    break;
+                if (table[SIZE_X - 2][0] == SIZE_X - 1) {
+                    if (table[SIZE_X - 1][0] != SIZE_X
+                            && !(table[SIZE_X - 1][0] == 0 && table[SIZE_X - 1][1] == SIZE_X)) {
+                        break;
+                    }
                 }
                 // 7が入った時8がはいってなければダメ
-                if (table[SIZE_X - 2][1] == SIZE_X * 2 - 1
-                        && table[SIZE_X - 1][1] != SIZE_X * 2) {
-                    break;
+                if (table[SIZE_X - 2][1] == SIZE_X * 2 - 1) {
+                    if (table[SIZE_X - 1][1] != SIZE_X * 2
+                            && !(table[SIZE_X - 1][1] == 0 && table[SIZE_X - 1][2] == SIZE_X * 2)) {
+                        break;
+                    }
                 }
                 // 9が入った時13がはいってなければダメ
-                if (table[0][SIZE_Y - 2] == SIZE_X * (SIZE_Y - 2) + 1
-                        && table[0][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 1) {
-                    break;
+                if (table[0][SIZE_Y - 2] == SIZE_X * (SIZE_Y - 2) + 1) {
+                    if (table[0][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 1
+                            && !(table[0][SIZE_Y - 1] == 0 && table[1][SIZE_Y - 1] == SIZE_X
+                                    * (SIZE_Y - 1) + 1)) {
+                        break;
+                    }
                 }
                 // 10が入った時14がはいってなければダメ
-                if (table[1][SIZE_Y - 2] == SIZE_X * (SIZE_Y - 2) + 2
-                        && table[1][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 2) {
-                    break;
+                if (table[1][SIZE_Y - 2] == SIZE_X * (SIZE_Y - 2) + 2) {
+                    if (table[1][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 2
+                            && !(table[1][SIZE_Y - 1] == 0 && table[2][SIZE_Y - 1] == SIZE_X
+                                    * (SIZE_Y - 1) + 2)) {
+                        break;
+                    }
                 }
                 success++;
                 continue;
@@ -85,6 +98,7 @@ public class Main {
 
     /**
      * 移動する
+     *
      * @return 移動した駒
      */
     int move() {
@@ -107,8 +121,8 @@ public class Main {
                 y = canMoveRight();
                 break;
             }
-            if (count > 5 && y != -1) {
-                // 5回やってダメだったら諦めて戻る
+            if (count > 30 && y != -1) {
+                // 30回やってダメだったら諦めて戻る
                 y = previous;
                 break;
             }
@@ -120,6 +134,7 @@ public class Main {
 
     /**
      * 上に移動出来るかどうか
+     *
      * @return -1: 移動出来ない その他: 移動先の番号
      */
     int canMoveUp() {
@@ -131,6 +146,7 @@ public class Main {
 
     /**
      * 下に移動出来るかどうか
+     *
      * @return -1: 移動出来ない その他: 移動先の番号
      */
     int canMoveDown() {
@@ -142,6 +158,7 @@ public class Main {
 
     /**
      * 左に移動出来るかどうか
+     *
      * @return -1: 移動出来ない その他: 移動先の番号
      */
     int canMoveLeft() {
@@ -153,6 +170,7 @@ public class Main {
 
     /**
      * 右に移動出来るかどうか
+     *
      * @return -1: 移動出来ない その他: 移動先の番号
      */
     int canMoveRight() {
@@ -164,7 +182,9 @@ public class Main {
 
     /**
      * 駒を移動する
-     * @param number 移動する駒の番号
+     *
+     * @param number
+     *            移動する駒の番号
      */
     void move(int number) {
         if (number <= 0) {
@@ -183,6 +203,7 @@ public class Main {
 
     /**
      * 盤を読み込む
+     *
      * @return 盤
      */
     Main() {
@@ -198,8 +219,7 @@ public class Main {
                         current[X] = xIndex;
                         current[Y] = yIndex;
                     } else {
-                        table[xIndex][yIndex] = Integer
-                                .parseInt(tmp[xIndex]);
+                        table[xIndex][yIndex] = Integer.parseInt(tmp[xIndex]);
                         piece[table[xIndex][yIndex] - 1][X] = xIndex;
                         piece[table[xIndex][yIndex] - 1][Y] = yIndex;
                     }
