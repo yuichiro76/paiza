@@ -16,7 +16,7 @@ public class Main {
     private int[][] piece = new int[SIZE_X * SIZE_Y - 1][2];
 
     // 現在空いている場所
-    private int[] current = {0, 0};
+    private int[] current = { 0, 0 };
 
     // 現在OKなポジション
     private int success = 0;
@@ -26,30 +26,25 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Main board = new Main();
+        board.run();
+    }
 
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(System.in);
-
-            // 盤の読込
-            // 「*」は0とする
-            board.read(scanner);
-
-//            board.print();
-            for (int i = 0; i < 100000; i++) {
-                if (board.check()) {
-//                    System.out.println(i);
-                    break;
-                }
-                System.out.println(board.move());
-//                board.move();
+    /**
+     * パズル実行
+     */
+    void run() {
+        // print();
+        int i = 0;
+        for (; i < 100000; i++) {
+            if (check()) {
+                // System.out.println(i);
+                break;
             }
-//            board.print();
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
+            // System.out.println(move());
+            move();
         }
+        print();
+        System.out.println(i);
     }
 
     /**
@@ -62,19 +57,22 @@ public class Main {
             int y = index / SIZE_Y;
             if (success == table[x][y] - 1) {
                 // 3が入った時4が入ってなければダメ
-                if (table[SIZE_X - 2][0] == 3 && table[SIZE_X - 1][0] != SIZE_X) {
+                if (table[SIZE_X - 2][0] == SIZE_X - 1 && table[SIZE_X - 1][0] != SIZE_X) {
                     break;
                 }
                 // 7が入った時8がはいってなければダメ
-                if (table[SIZE_X - 2][1] == 7 && table[SIZE_X - 1][1] != SIZE_X * 2) {
+                if (table[SIZE_X - 2][1] == SIZE_X * 2 - 1
+                        && table[SIZE_X - 1][1] != SIZE_X * 2) {
                     break;
                 }
                 // 9が入った時13がはいってなければダメ
-                if (table[0][SIZE_Y - 2] == 9 && table[0][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 1) {
+                if (table[0][SIZE_Y - 2] == SIZE_X * (SIZE_Y - 2) + 1
+                        && table[0][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 1) {
                     break;
                 }
                 // 10が入った時14がはいってなければダメ
-                if (table[1][SIZE_Y - 2] == 10 && table[1][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 2) {
+                if (table[1][SIZE_Y - 2] == SIZE_X * (SIZE_Y - 2) + 2
+                        && table[1][SIZE_Y - 1] != SIZE_X * (SIZE_Y - 1) + 2) {
                     break;
                 }
                 success++;
@@ -94,7 +92,7 @@ public class Main {
         int count = 0;
         while (y == -1 || y == previous || y <= success) {
             count++;
-            int x = (int)(Math.random() * 4);
+            int x = (int) (Math.random() * 4);
             switch (x) {
             case 0:
                 y = canMoveUp();
@@ -185,29 +183,37 @@ public class Main {
 
     /**
      * 盤を読み込む
-     * @param scanner スキャナー
      * @return 盤
      */
-    void read(Scanner scanner) {
-        for (int yIndex = 0; yIndex < SIZE_Y; yIndex++) {
-            String[] tmp = scanner.nextLine().split(" ");
-            for (int xIndex = 0; xIndex < SIZE_X; xIndex++) {
-                if (tmp[xIndex].equals("*")) {
-                    table[xIndex][yIndex] = 0;
-                    current[X] = xIndex;
-                    current[Y] = yIndex;
-                } else {
-                    table[xIndex][yIndex] = Integer.parseInt(tmp[xIndex]);
-                    piece[table[xIndex][yIndex] - 1][X] = xIndex;
-                    piece[table[xIndex][yIndex] - 1][Y] = yIndex;
+    Main() {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(System.in);
+
+            for (int yIndex = 0; yIndex < SIZE_Y; yIndex++) {
+                String[] tmp = scanner.nextLine().split(" ");
+                for (int xIndex = 0; xIndex < SIZE_X; xIndex++) {
+                    if (tmp[xIndex].equals("*")) {
+                        table[xIndex][yIndex] = 0;
+                        current[X] = xIndex;
+                        current[Y] = yIndex;
+                    } else {
+                        table[xIndex][yIndex] = Integer
+                                .parseInt(tmp[xIndex]);
+                        piece[table[xIndex][yIndex] - 1][X] = xIndex;
+                        piece[table[xIndex][yIndex] - 1][Y] = yIndex;
+                    }
                 }
+            }
+        } finally {
+            if (scanner != null) {
+                scanner.close();
             }
         }
     }
 
     /**
-     * 盤を出力する
-     * デバッグ用
+     * 盤を出力する デバッグ用
      */
     void print() {
         System.out.println();
